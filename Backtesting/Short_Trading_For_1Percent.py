@@ -97,11 +97,18 @@ def short_trading_for_1percent(df):
     fig.add_trace(ror_chart, secondary_y=True)
 
     # 매수 가능한 위치/날짜를 표시
+    # for idx in df.index[cond_buy]:
+    #     fig.add_annotation(                 # 해당 함수는 값을 하나씩 입력해야하므로 for문을 사용해 값을 하나씩 추가
+    #         x = idx,
+    #         y = df.loc[idx, 'open']
+    #     )
+    #     fig.update_annotations(dict(showarrow=True))
+
+    annotations = []
     for idx in df.index[cond_buy]:
-        fig.add_annotation(                 # 해당 함수는 값을 하나씩 입력해야하므로 for문을 사용해 값을 하나씩 추가
-            x = idx,
-            y = df.loc[idx, 'open']
-        )
+        annotations.append(dict(x=idx, y=df.loc[idx, 'open'], showarrow=True))
+    
+    fig.update_layout(annotations=annotations)
 
     title = "코인 차트"
     fig.write_html('{}.html'.format(title))
